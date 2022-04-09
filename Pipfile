@@ -5,8 +5,19 @@ name = "pypi"
 
 [packages]
 django = "*"
+black = "*"
+pillow = "*"
+django-countries = "*"
+django-seed = "*"
+psycopg2-binary = "*"
+django-dotenv = "*"
+django-allauth = "*"
+requests = "*"
+django-tailwind = "*"
 
 [dev-packages]
+flake8 = "*"
+pylint = "*"
 
 [requires]
 python_version = "3.10"
