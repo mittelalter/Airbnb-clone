@@ -83,7 +83,9 @@ class Room(core_models.TimeStampedModel):
     check_out = models.TimeField()
     instant_book = models.BooleanField(default=False)
     host = models.ForeignKey(
-        user_models.User, related_name="rooms", on_delete=models.CASCADE
+        user_models.User,
+        related_name="rooms",
+        on_delete=models.CASCADE,  # 유저모델은 room모델에 대한 정보가 없다. 즉 연결되 있는 상태를 모른다. 유저하나가 방 여러개를 가질 수 있기 때문에 일대다 관계가 성립된다. (넘겨주는 인자가 일이 됨)
     )
     room_type = models.ForeignKey(
         RoomType, related_name="rooms", on_delete=models.SET_NULL, null=True
@@ -110,3 +112,7 @@ class Room(core_models.TimeStampedModel):
                 all_ratings += review.rating_average()
             return round(all_ratings / len(all_reviews), 2)
         return 0
+
+    def first_photo(self):
+        (photo,) = self.photos.all()[:1]
+        return photo.file.url

@@ -9,6 +9,7 @@ from django.urls import reverse_lazy
 from django.shortcuts import redirect, reverse
 from django.contrib.auth import authenticate, login, logout
 from . import forms, models
+from django.contrib import messages
 
 
 class LoginView(FormView):
@@ -144,6 +145,7 @@ class KakaoException(Exception):
 def kakao_callback(request):
     try:
         code = request.GET.get("code")
+        raise KakaoException()
         REST_API_KEY = os.environ.get("K_KEY")
         REDIRECT_URI = "http://127.0.0.1:8000/users/login/kakao/callback"
         token_request = requests.get(
@@ -182,4 +184,5 @@ def kakao_callback(request):
         login(request, user)
         return redirect(reverse("core:home"))
     except KakaoException:
+        messages.error(request, "Something went wrong")
         return redirect(reverse("users:login"))
